@@ -1,2 +1,2 @@
 # Clerk
-Clerk logger
+Simple and lightweight logger.
