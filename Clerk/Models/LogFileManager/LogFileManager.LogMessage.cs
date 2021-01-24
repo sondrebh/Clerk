@@ -17,13 +17,13 @@ namespace Clerk.Models
 
         public void LogMessage(string message)
         {
-            if(logFileSpecificsNeedsValidation())
+            if(logFileSpecificsNeedsValidation)
                 validateLogFileSpecifics();
 
-            if(loggingToFileIsNotAvailable())
+            if(loggingToFileIsNotAvailable)
                 return;
 
-            if(logFileStreamWriterIsNotSet())
+            if(logFileStreamWriterIsNotSet)
                 setLogFileStreamWriter();
 
             logFileStreamWriter.WriteLine(message);
@@ -37,7 +37,7 @@ namespace Clerk.Models
 
             startValidationOfLogFileSpecifics();
 
-            if(logFileIndexIsZero())
+            if(logFileIndexIsZero)
                 increaseLogFileIndex();
 
             while(logFileSpecificsValidationRunning)
@@ -48,7 +48,7 @@ namespace Clerk.Models
 
         private void validateLogFileAtIndex()
         {
-            if(logFileAtCurrentIndexExists()) {
+            if(logFileAtCurrentIndexExists) {
                 evaluateLogFileAtCurrentIndex();
             } else {
                 updateLogFileSpecifics();
@@ -56,7 +56,7 @@ namespace Clerk.Models
         }
         private void evaluateLogFileAtCurrentIndex()
         {
-            if(logFileAtCurrentIndexExceedsSizeLimit()) {
+            if(logFileAtCurrentIndexExceedsSizeLimit) {
                 continueValidationOfLogFileSpecifics();
             } else {
                 endValidationOfLogFileSpecifics();
@@ -65,7 +65,7 @@ namespace Clerk.Models
 
         private void updateLogFileSpecifics()
         {
-            if(currentLogFileIndexIsLessThanMax()) {
+            if(currentLogFileIndexIsLessThanMax) {
                 createLogFileAtCurrentIndex();
                 setLogFileStreamWriter();
             }
@@ -75,7 +75,7 @@ namespace Clerk.Models
 
         #region Conditionals
 
-        private bool currentLogFileIndexIsLessThanMax()
+        private bool currentLogFileIndexIsLessThanMax
             => (this.currentLogFileIndex <= this.LogFileMaxCount);
 
         private void startValidationOfLogFileSpecifics()
@@ -87,40 +87,40 @@ namespace Clerk.Models
         private void endValidationOfLogFileSpecifics()
             => logFileSpecificsValidationRunning = false;
 
-        private bool logFileSpecificsNeedsValidation()
-            => (logFileStreamWriterIsNotSet() || currentLogFileSizeExceedsLimit());
+        private bool logFileSpecificsNeedsValidation
+            => (logFileStreamWriterIsNotSet || currentLogFileSizeExceedsLimit());
 
-        private bool logFileStreamWriterIsSet()
+        private bool logFileStreamWriterIsSet
             => (logFileStreamWriterSingleton != null);
 
-        private bool logFileStreamWriterIsNotSet()
+        private bool logFileStreamWriterIsNotSet
             => (logFileStreamWriterSingleton == null);
 
-        private bool loggingToFileIsNotAvailable()
+        private bool loggingToFileIsNotAvailable
             => (this.FileLoggingEnabled && (this.LogFileMaxCount > 0) && (this.currentLogFileIndex <= this.LogFileMaxCount)) == false;
 
-        private bool loggingIsAvailable()
+        private bool loggingIsAvailable
             => (this.FileLoggingEnabled && (this.LogFileMaxCount > 0) && (this.currentLogFileIndex <= this.LogFileMaxCount)) == true;
 
-        private bool currentProgramPathIsNotSet()
+        private bool currentProgramPathIsNotSet
             => (currentProgramPath == null);
     
-        private bool logFileIndexIsZero()
+        private bool logFileIndexIsZero
             => currentLogFileIndex == 0;
 
         private bool currentLogFileSizeExceedsLimit()
         {
-            if(logFileStreamWriterIsSet()) {
+            if(logFileStreamWriterIsSet) {
                 return (logFileStreamWriterSingleton.Value.BaseStream.Length / 1000) > this.LogFileMaxSizeInKB;
             } else {
                 return false; 
             }
         }
         
-        private bool logFileAtCurrentIndexExceedsSizeLimit()
+        private bool logFileAtCurrentIndexExceedsSizeLimit
             => (new FileInfo(getLogFilePath()).Length / 1000) > this.LogFileMaxSizeInKB;
 
-        private bool logFileAtCurrentIndexExists()
+        private bool logFileAtCurrentIndexExists
             => File.Exists(getLogFilePath());
 
         #endregion Conditionals
@@ -139,7 +139,7 @@ namespace Clerk.Models
 
         private string getProgramPath()
         {
-            if(currentProgramPathIsNotSet())
+            if(currentProgramPathIsNotSet)
                 setCurrentProgramPath();
 
             return this.currentProgramPath;
