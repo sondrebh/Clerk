@@ -41,9 +41,7 @@ namespace Clerk.Models
                 increaseLogFileIndex();
 
             while(logFileSpecificsValidationRunning)
-            {
                 validateLogFileAtIndex();
-            }
         }
 
         private void validateLogFileAtIndex()
